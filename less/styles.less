@@ -1,5 +1,10 @@
 @import "grids.css";
 @import "animations.css";
+
+@height-button: 50px;
+@time-animation: .1s linear;
+@colorbg: red;
+
 html, body {
   height: 100%;
   width: 100%;
@@ -7,64 +12,67 @@ html, body {
   margin: 0;
   perspective: 1000px;
 }
+
 .paneltop {
-  height: 100%;
+  height: 40%;
   transform-style: preserve-3d;
   background-color: black;
+  pointer-events: none;
 
   .button {
     height: 100%;
     width: 100%;
-    background-color: white;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform .1s linear;
+    transition: transform @time-animation;
 
     .topblock {
       width: 100%;
-      height: 200%;
-      top: -100%;
+      height: 0;
+      bottom: 100%;
       transform-origin: 0 bottom;
       transform: rotateX(90deg);
-      background-color: rgba(84, 76, 85, 1);
+      background-color: @colorbg;
+      transition: height @time-animation;
       position: absolute;
     }
     .rigthblock {
       height: 100%;
-      width: 100%;
-      right: -100%;
+      width: 0;
+      left: 100%;
       transform-origin: left 0;
       transform: rotateY(90deg);
-      background-color: rgba(84, 76, 85, 1);
+      background-color: @colorbg;
+      transition: width @time-animation;
       position: absolute;
     }
     .bottomblock {
       width: 100%;
-      height: 200%;
-      bottom: -100%;
+      height: 0;
+      top: 100%;
       transform-origin: 0 top;
       transform: rotateX(-90deg);
-      background-color: rgba(84, 76, 85, 1);
+      background-color: @colorbg;
+      transition: height @time-animation;
       position: absolute;
     }
     .leftblock {
       height: 100%;
-      width: 100%;
-      left: -100%;
+      width: 0;
+      right: 100%;
       transform-origin: right 0;
       transform: rotateY(-90deg);
-      background-color: rgba(84, 76, 85, 1);
+      background-color: @colorbg;
+      transition: width @time-animation;
       position: absolute;
     }
     .shadow {
       width: 100%;
       height: 100%;
       position: absolute;
-      background: none;
-      transform: translateZ(-1px);
-      transition: transform .1s linear, box-shadow .1s linear;
+      transition: transform @time-animation, box-shadow @time-animation;
     }
-    &:nth-child(1) {
+    & {
       animation: colorbg 1.5s linear infinite alternate;
     }
     &:nth-child(2n) {
@@ -79,14 +87,25 @@ html, body {
     &:nth-child(5n) {
       animation: colorbg 3.5s linear infinite alternate;
     }
-    &.text:hover {
-      /*! class .text on/off all button !*/
-      transform: translateZ(40px);
+    &:hover {
+      transform: translateZ(@height-button);
       animation: rainbow 1s linear infinite;
     }
+    &:hover .topblock {
+      height: @height-button;
+    }
+    &:hover .bottomblock {
+      height: @height-button;
+    }
+    &:hover .rigthblock {
+      width: @height-button;
+    }
+    &:hover .leftblock {
+      width: @height-button;
+    }
     &:hover .shadow {
-      transform: translateZ(-38px);
-      box-shadow: 0 0 50px #000;
+      transform: translateZ(calc(-@height-button + 1px));
+      box-shadow: 0 0 50px #ff0000;
     }
   }
   .text {
@@ -97,15 +116,11 @@ html, body {
     text-transform: uppercase;
     font-weight: bold;
     cursor: default;
+    pointer-events: auto;
 
     #rotate {
       transform: rotate(-180deg);
       writing-mode: vertical-lr;
     }
-  }
-  footer {
-    width: 100%;
-    height: 100%;
-    background-color: white;
   }
 }
